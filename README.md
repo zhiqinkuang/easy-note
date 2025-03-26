@@ -15,3 +15,6 @@
 * 创建docker 需要的环境
 * 建立idl文件夹,规定接口建立 note.thrift, user.thrift, api.thrift
 * 建立Makefile, 写入代码生成指令
+* 建立cmd文件夹,分别创建note,user,api子文件夹用来存放kitex的代码,建立Makefile,设置指令,用里面的代码生成初始化指令
+* 在cmd/note or cmd/user 文件下面的创建  pake、dal、rpc、serivce 文件夹用来放文件
+* 在 cmd/api 里面创建 mw(中间件)、rpc
