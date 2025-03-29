@@ -18,3 +18,20 @@
 * 建立cmd文件夹,分别创建note,user,api子文件夹用来存放kitex的代码,建立Makefile,设置指令,用里面的代码生成初始化指令
 * 在cmd/note or cmd/user 文件下面的创建  pake、dal、rpc、serivce 文件夹用来放文件
 * 在 cmd/api 里面创建 mw(中间件)、rpc
+* 在项目根目录下安装 hertz 之后执行 go mod tidy
+
+### 项目依赖
+* 安装项目的依赖包
+```
+go get -u gorm.io/gorm
+go get -u gorm.io/driver/mysql
+go get -u gorm.io/gorm/logger
+go get -u gorm.io/plugin/opentelemetry/logging/logrus
+go get -u gorm.io/plugin/opentelemetry/tracing
+go get github.com/cloudwego/kitex/pkg/endpoint
+go get github.com/cloudwego/kitex/pkg/klog
+go get github.com/cloudwego/kitex/pkg/rpcinfo
+```
+
+
+
