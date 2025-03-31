@@ -31,6 +31,13 @@ go get -u gorm.io/plugin/opentelemetry/tracing
 go get github.com/cloudwego/kitex/pkg/endpoint
 go get github.com/cloudwego/kitex/pkg/klog
 go get github.com/cloudwego/kitex/pkg/rpcinfo
+go get github.com/kitex-contrib/obs-opentelemetry/provider
+go get github.com/kitex-contrib/obs-opentelemetry/tracing
+go get github.com/kitex-contrib/registry-etcd
+go get github.com/hertz-contrib/gzip
+go get github.com/hertz-contrib/requestid
+go get github.com/hertz-contrib/jwt
+
 ```
 
 

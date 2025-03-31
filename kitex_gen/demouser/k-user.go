@@ -1448,7 +1448,7 @@ SkipFieldError:
 
 func (p *UserServiceMGetUserArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
-	_field := NewCheckUserRequest()
+	_field := NewMGetUserRequest()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {

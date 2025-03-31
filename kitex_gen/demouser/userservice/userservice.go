@@ -174,7 +174,7 @@ func (p *kClient) CreateUser(ctx context.Context, req *demouser.CreateUserReques
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) MGetUser(ctx context.Context, req *demouser.CheckUserRequest) (r *demouser.MGetUserResponse, err error) {
+func (p *kClient) MGetUser(ctx context.Context, req *demouser.MGetUserRequest) (r *demouser.MGetUserResponse, err error) {
 	var _args demouser.UserServiceMGetUserArgs
 	_args.Req = req
 	var _result demouser.UserServiceMGetUserResult

@@ -12,7 +12,7 @@ import (
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	CreateUser(ctx context.Context, req *demouser.CreateUserRequest, callOptions ...callopt.Option) (r *demouser.CreateUserResponse, err error)
-	MGetUser(ctx context.Context, req *demouser.CheckUserRequest, callOptions ...callopt.Option) (r *demouser.MGetUserResponse, err error)
+	MGetUser(ctx context.Context, req *demouser.MGetUserRequest, callOptions ...callopt.Option) (r *demouser.MGetUserResponse, err error)
 	CheckUser(ctx context.Context, req *demouser.CheckUserRequest, callOptions ...callopt.Option) (r *demouser.CheckUserResponse, err error)
 }
 
@@ -50,7 +50,7 @@ func (p *kUserServiceClient) CreateUser(ctx context.Context, req *demouser.Creat
 	return p.kClient.CreateUser(ctx, req)
 }
 
-func (p *kUserServiceClient) MGetUser(ctx context.Context, req *demouser.CheckUserRequest, callOptions ...callopt.Option) (r *demouser.MGetUserResponse, err error) {
+func (p *kUserServiceClient) MGetUser(ctx context.Context, req *demouser.MGetUserRequest, callOptions ...callopt.Option) (r *demouser.MGetUserResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.MGetUser(ctx, req)
 }

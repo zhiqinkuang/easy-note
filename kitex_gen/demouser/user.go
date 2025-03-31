@@ -1925,7 +1925,7 @@ func (p *CheckUserResponse) Field2DeepEqual(src *BaseResp) bool {
 type UserService interface {
 	CreateUser(ctx context.Context, req *CreateUserRequest) (r *CreateUserResponse, err error)
 
-	MGetUser(ctx context.Context, req *CheckUserRequest) (r *MGetUserResponse, err error)
+	MGetUser(ctx context.Context, req *MGetUserRequest) (r *MGetUserResponse, err error)
 
 	CheckUser(ctx context.Context, req *CheckUserRequest) (r *CheckUserResponse, err error)
 }
@@ -2273,7 +2273,7 @@ func (p *UserServiceCreateUserResult) Field0DeepEqual(src *CreateUserResponse) b
 }
 
 type UserServiceMGetUserArgs struct {
-	Req *CheckUserRequest `thrift:"req,1" frugal:"1,default,CheckUserRequest" json:"req"`
+	Req *MGetUserRequest `thrift:"req,1" frugal:"1,default,MGetUserRequest" json:"req"`
 }
 
 func NewUserServiceMGetUserArgs() *UserServiceMGetUserArgs {
@@ -2283,15 +2283,15 @@ func NewUserServiceMGetUserArgs() *UserServiceMGetUserArgs {
 func (p *UserServiceMGetUserArgs) InitDefault() {
 }
 
-var UserServiceMGetUserArgs_Req_DEFAULT *CheckUserRequest
+var UserServiceMGetUserArgs_Req_DEFAULT *MGetUserRequest
 
-func (p *UserServiceMGetUserArgs) GetReq() (v *CheckUserRequest) {
+func (p *UserServiceMGetUserArgs) GetReq() (v *MGetUserRequest) {
 	if !p.IsSetReq() {
 		return UserServiceMGetUserArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *UserServiceMGetUserArgs) SetReq(val *CheckUserRequest) {
+func (p *UserServiceMGetUserArgs) SetReq(val *MGetUserRequest) {
 	p.Req = val
 }
 
@@ -2360,7 +2360,7 @@ ReadStructEndError:
 }
 
 func (p *UserServiceMGetUserArgs) ReadField1(iprot thrift.TProtocol) error {
-	_field := NewCheckUserRequest()
+	_field := NewMGetUserRequest()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -2434,7 +2434,7 @@ func (p *UserServiceMGetUserArgs) DeepEqual(ano *UserServiceMGetUserArgs) bool {
 	return true
 }
 
-func (p *UserServiceMGetUserArgs) Field1DeepEqual(src *CheckUserRequest) bool {
+func (p *UserServiceMGetUserArgs) Field1DeepEqual(src *MGetUserRequest) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false

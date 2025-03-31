@@ -53,6 +53,6 @@ struct  CheckUserResponse{
 
 service UserService{
 CreateUserResponse CreateUser (1: CreateUserRequest req)
-MGetUserResponse MGetUser(1: CheckUserRequest req)
+MGetUserResponse MGetUser(1: MGetUserRequest req)
 CheckUserResponse CheckUser(1 : CheckUserRequest req)
 }

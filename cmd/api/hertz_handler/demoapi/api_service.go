@@ -4,42 +4,41 @@ package demoapi
 
 import (
 	"context"
-
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	demoapi "github.com/zhiqinkuang/easy-note/cmd/api/biz/model/demoapi"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+	"github.com/zhiqinkuang/easy-note/cmd/api/mw"
+	"github.com/zhiqinkuang/easy-note/cmd/api/rpc"
+	"github.com/zhiqinkuang/easy-note/kitex_gen/demonote"
+	"github.com/zhiqinkuang/easy-note/kitex_gen/demouser"
+	"github.com/zhiqinkuang/easy-note/pkg/consts"
+	"github.com/zhiqinkuang/easy-note/pkg/errno"
+
+	demoapi "github.com/zhiqinkuang/easy-note/hertz_gen/demoapi"
 )
 
-// CreateUser .
-// @router /v1/user/register [POST]
 func CreateUser(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req demoapi.CreateUserRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		SendResponse(c, errno.ConvertErr(err), nil)
 		return
 	}
-
-	resp := new(demoapi.CreateUserResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	err = rpc.CreateUser(ctx, &demouser.CreateUserRequest{
+		Username: req.Username,
+		Password: req.Password,
+	})
+	if err != nil {
+		SendResponse(c, errno.ConvertErr(err), nil)
+		return
+	}
+	SendResponse(c, errno.Success, nil)
 }
 
 // CheckUser .
 // @router /v1/user/login [POST]
 func CheckUser(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req demoapi.CheckUserRequest
-	err = c.BindAndValidate(&req)
-	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
-	}
-
-	resp := new(demoapi.CheckUserResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	mw.JwtMiddleware.LoginHandler(ctx, c)
 }
 
 // CreateNote .
@@ -49,13 +48,20 @@ func CreateNote(ctx context.Context, c *app.RequestContext) {
 	var req demoapi.CreateNoteRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		SendResponse(c, errno.ConvertErr(err), nil)
 		return
 	}
-
-	resp := new(demoapi.CreateNoteResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	v, _ := c.Get(consts.IdentityKey)
+	err = rpc.CreateNote(ctx, &demonote.CreateNoteRequest{
+		Title:   req.Title,
+		Content: req.Content,
+		UserId:  v.(*demoapi.User).UserID,
+	})
+	if err != nil {
+		SendResponse(c, errno.ConvertErr(err), nil)
+		return
+	}
+	SendResponse(c, errno.Success, nil)
 }
 
 // QueryNote .
@@ -65,13 +71,24 @@ func QueryNote(ctx context.Context, c *app.RequestContext) {
 	var req demoapi.QueryNoteRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		SendResponse(c, errno.ConvertErr(err), nil)
 		return
 	}
-
-	resp := new(demoapi.QueryNoteResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	v, _ := c.Get(consts.IdentityKey)
+	notes, total, err := rpc.QueryNotes(ctx, &demonote.QueryNoteRequest{
+		UserId:    v.(*demoapi.User).UserID,
+		SearchKey: req.SearchKey,
+		Offset:    req.Offset,
+		Limit:     req.Limit,
+	})
+	if err != nil {
+		SendResponse(c, errno.ConvertErr(err), nil)
+		return
+	}
+	SendResponse(c, errno.Success, utils.H{
+		consts.Total: total,
+		consts.Notes: notes,
+	})
 }
 
 // UpdateNote .
@@ -81,13 +98,21 @@ func UpdateNote(ctx context.Context, c *app.RequestContext) {
 	var req demoapi.UpdateNoteRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		SendResponse(c, errno.ConvertErr(err), nil)
 		return
 	}
-
-	resp := new(demoapi.UpdateNoteResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	v, _ := c.Get(consts.IdentityKey)
+	err = rpc.UpdateNote(ctx, &demonote.UpdateNoteRequest{
+		NoteId: req.NoteID,
+		UserId: v.(*demoapi.User).UserID,
+		Title:  req.Title,
+		Cotent: req.Content,
+	})
+	if err != nil {
+		SendResponse(c, errno.ConvertErr(err), nil)
+		return
+	}
+	SendResponse(c, errno.Success, nil)
 }
 
 // DeleteNote .
@@ -97,11 +122,17 @@ func DeleteNote(ctx context.Context, c *app.RequestContext) {
 	var req demoapi.DeleteNoteRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		SendResponse(c, errno.ConvertErr(err), nil)
 		return
 	}
-
-	resp := new(demoapi.DeleteNoteResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	v, _ := c.Get(consts.IdentityKey)
+	err = rpc.DeleteNote(ctx, &demonote.DeleteNoteRequest{
+		NoteId: req.NoteID,
+		UserId: v.(*demoapi.User).UserID,
+	})
+	if err != nil {
+		SendResponse(c, errno.ConvertErr(err), nil)
+		return
+	}
+	SendResponse(c, errno.Success, nil)
 }
